@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import subprocess
+
+
+def _get_local_tags(image_name: str) -> set[str]:
+    res = subprocess.run(
+        ('docker', 'image', 'list', image_name, '--format', '{{.Tag}}'),
+        capture_output=True,
+    )
+    return set(res.stdout.decode().splitlines())
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('build')
+    args = parser.parse_args()
+
+    image_name = 'chktex' if args.build == 'full' else f'chktex-{args.build}'
+    image_tags = _get_local_tags(image_name)
+    image_version_tags = list(filter(lambda s: s[0].isdigit(), image_tags))
+    version, _, _ = image_version_tags[0].partition('-')
+
+    for tag in ('latest', version):
+        subprocess.run(
+            (
+                'docker', 'manifest', 'create',
+                f'ghcr.io/arkinmodi/{image_name}:{tag}',
+                '--amend',
+                f'ghcr.io/arkinmodi/{image_name}:{tag}-amd64'
+                f'ghcr.io/arkinmodi/{image_name}:{tag}-arm64',
+            ),
+            check=True,
+        )
+
+        subprocess.run(
+            (
+                'docker', 'manifest', 'push',
+                f'ghcr.io/arkinmodi/{image_name}:{tag}',
+            ),
+            check=True,
+        )
+
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

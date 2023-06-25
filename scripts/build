@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import os
+import subprocess
+
+CHKTEX_VERSION = '1.7.8'
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('build')
+    parser.add_argument('arch')
+    parser.add_argument('--use-podman', action='store_true')
+    args = parser.parse_args()
+
+    if args.use_podman:
+        docker = 'podman'
+    else:
+        docker = 'docker'
+
+    if args.build == 'full':
+        DOCKERFILE = 'Dockerfile'
+        IMAGE_NAME = 'chktex'
+    elif args.build == 'slim':
+        DOCKERFILE = 'slim.Dockerfile'
+        IMAGE_NAME = 'chktex-slim'
+    else:
+        raise ValueError(
+            'Unexpected build type. Expected "full" or "slim". '
+            f'Got: {args.build}',
+        )
+
+    if args.arch not in ('arm64', 'amd64'):
+        raise ValueError(
+            'Unexpected architecture. Expected "arm64" or "amd64". '
+            f'Got: {args.arch}',
+        )
+
+    ARCHITECTURE = args.arch
+    IMAGE_TAGS = [
+        f'{IMAGE_NAME}:latest-{ARCHITECTURE}',
+        f'{IMAGE_NAME}:{CHKTEX_VERSION}-{ARCHITECTURE}',
+    ]
+
+    docker_specific_flags = ('--load',) if not args.use_podman else ()
+    subprocess.run(
+        (
+            docker, 'buildx', 'build', '.',
+            '--file', DOCKERFILE,
+            *[flags for tag in IMAGE_TAGS for flags in ('--tag', tag)],
+            '--platform', f'linux/{ARCHITECTURE}',
+            *docker_specific_flags,
+        ),
+        capture_output=True,
+        check=True,
+    )
+
+    if 'GITHUB_ENV' in os.environ:
+        with open(os.environ['GITHUB_ENV'], 'a') as f:
+            f.write(f'LATEST_TAG={IMAGE_NAME}:latest-{ARCHITECTURE}\n')
+            f.write(
+                f'VERSION_TAG={IMAGE_NAME}:{CHKTEX_VERSION}-{ARCHITECTURE}\n',
+            )
+    else:
+        print(IMAGE_TAGS)
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

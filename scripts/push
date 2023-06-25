@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import subprocess
+
+
+def _push(
+        *,
+        image_name: str,
+        image_tags: set[str],
+        target_account: str,
+) -> None:
+    to_push = [
+        (f'{image_name}:{tag}', f'{target_account}/{image_name}:{tag}')
+        for tag in image_tags
+    ]
+
+    for src, dest in to_push:
+        subprocess.run(('docker', 'tag', src, dest), check=True)
+        subprocess.run(('docker', 'push', dest), check=True)
+
+
+def _get_local_tags(image_name: str) -> set[str]:
+    res = subprocess.run(
+        ('docker', 'image', 'list', image_name, '--format', '{{.Tag}}'),
+        capture_output=True,
+    )
+    return set(res.stdout.decode().splitlines())
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('build')
+    args = parser.parse_args()
+
+    image_name = 'chktex' if args.build == 'full' else f'chktex-{args.build}'
+    image_tags = _get_local_tags(image_name)
+
+    _push(
+        image_tags=image_tags,
+        image_name='chktex',
+        target_account='ghcr.io/arkinmodi',
+    )
+
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

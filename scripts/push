@@ -39,7 +39,7 @@ def main() -> int:
 
     _push(
         image_tags=image_tags,
-        image_name='chktex',
+        image_name=image_name,
         target_account='ghcr.io/arkinmodi',
     )
 

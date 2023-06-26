@@ -29,7 +29,7 @@ def main() -> int:
                 'docker', 'manifest', 'create',
                 f'ghcr.io/arkinmodi/{image_name}:{tag}',
                 '--amend',
-                f'ghcr.io/arkinmodi/{image_name}:{tag}-amd64'
+                f'ghcr.io/arkinmodi/{image_name}:{tag}-amd64',
                 f'ghcr.io/arkinmodi/{image_name}:{tag}-arm64',
             ),
             check=True,

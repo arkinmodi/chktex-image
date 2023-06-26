@@ -42,6 +42,7 @@ jobs:
         build_target: ["full", "slim"]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
       - run: "docker load --input ./chktex-${{ matrix.build_target }}-arm64.tar/chktex-${{ matrix.build_target }}-arm64.tar"  # yamllint disable-line rule:line-length
       - run: "docker load --input ./chktex-${{ matrix.build_target }}-amd64.tar/chktex-${{ matrix.build_target }}-amd64.tar"  # yamllint disable-line rule:line-length

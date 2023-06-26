@@ -23,6 +23,11 @@ RUN : \
 
 FROM alpine:latest
 
+LABEL \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.source="https://github.com/arkinmodi/chktex-image" \
+    org.opencontainers.image.title="ChkTeX"
+
 # perl is needed for deweb
 RUN apk add --update --no-cache \
     dumb-init \

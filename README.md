@@ -6,8 +6,8 @@ ChkTeX is compiled with POSIX extended regex support.
 
 ## Images
 
-- `ghcr.io/arkinmodi/chktex:latest`
-- `ghcr.io/arkinmodi/chktex-slim:latest`
+-   `ghcr.io/arkinmodi/chktex:latest`
+-   `ghcr.io/arkinmodi/chktex-slim:latest`
 
 > `chktex:latest` contains `chktex`, `chkweb`, and `deweb`.
 >
@@ -15,6 +15,6 @@ ChkTeX is compiled with POSIX extended regex support.
 
 ## Quicklinks
 
-- ChkTeX Homepage: https://www.nongnu.org/chktex
-- ChkTeX CTAN: https://www.ctan.org/pkg/chktex
-- ChkTeX Bug Tracker: https://savannah.nongnu.org/bugs/?group=chktex
+-   ChkTeX Homepage: https://www.nongnu.org/chktex
+-   ChkTeX CTAN: https://www.ctan.org/pkg/chktex
+-   ChkTeX Bug Tracker: https://savannah.nongnu.org/bugs/?group=chktex

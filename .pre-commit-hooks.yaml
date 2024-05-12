@@ -1,0 +1,15 @@
+# yamllint disable rule:line-length
+# yaml-language-server: $schema=https://json.schemastore.org/pre-commit-hooks.json
+# yamllint enable rule:line-length
+---
+- id: chktex
+  name: chktex
+  description: ChkTeX is compiled with POSIX extended regex support.
+  language: docker_image
+  entry: --entrypoint chktex ghcr.io/arkinmodi/chktex:latest
+
+- id: chktex-slim
+  name: chktex-slim
+  description: ChkTeX is compiled with POSIX extended regex support.
+  language: docker_image
+  entry: --entrypoint chktex ghcr.io/arkinmodi/chktex-slim:latest

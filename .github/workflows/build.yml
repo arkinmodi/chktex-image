@@ -5,6 +5,8 @@ name: Build ChkTeX
   push:
     branches:
       - main
+    tags:
+      - "*"
 
 permissions:
   packages: write
@@ -33,7 +35,7 @@ jobs:
           path: "chktex-${{ matrix.build_target }}-${{ matrix.arch }}.tar"
 
   push:
-    if: github.ref_name == 'main'
+    if: startsWith(github.ref, 'refs/tags/')
     needs:
       - build-and-test
     strategy:

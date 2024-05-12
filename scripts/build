@@ -5,7 +5,7 @@ import argparse
 import os
 import subprocess
 
-CHKTEX_VERSION = '1.7.8'
+CHKTEX_VERSION = '1.7.9'
 
 
 def main() -> int:

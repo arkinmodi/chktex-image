@@ -8,8 +8,8 @@ RUN apk add --update --no-cache \
     libc-dev \
     make
 
-ARG CHKTEX_VERSION=1.7.8
-ARG CHKTEX_SHA256=5286f7844f0771ac0711c7313cf5e0421ed509dc626f9b43b4f4257fb1591ea8
+ARG CHKTEX_VERSION=1.7.9
+ARG CHKTEX_SHA256=df6ee31632a4f4a8e18849b804657e27e3d96deb3f237edbd25656415eb31195
 
 RUN : \
     && curl --silent --location --output /tmp/chktex.tar.gz http://download.savannah.gnu.org/releases/chktex/chktex-${CHKTEX_VERSION}.tar.gz \

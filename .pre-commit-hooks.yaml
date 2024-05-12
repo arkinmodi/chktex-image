@@ -7,9 +7,13 @@
   description: ChkTeX is compiled with POSIX extended regex support.
   language: docker_image
   entry: --entrypoint chktex ghcr.io/arkinmodi/chktex:latest
+  types:
+    - tex
 
 - id: chktex-slim
   name: chktex-slim
   description: ChkTeX is compiled with POSIX extended regex support.
   language: docker_image
   entry: --entrypoint chktex ghcr.io/arkinmodi/chktex-slim:latest
+  types:
+    - tex

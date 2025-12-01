@@ -20,7 +20,7 @@ jobs:
         arch: ["arm64", "amd64"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - uses: actions/setup-python@v6
@@ -44,7 +44,7 @@ jobs:
         build_target: ["full", "slim"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v6
       - run: "docker load --input ./chktex-${{ matrix.build_target }}-arm64.tar/chktex-${{ matrix.build_target }}-arm64.tar" # yamllint disable-line rule:line-length
       - run: "docker load --input ./chktex-${{ matrix.build_target }}-amd64.tar/chktex-${{ matrix.build_target }}-amd64.tar" # yamllint disable-line rule:line-length

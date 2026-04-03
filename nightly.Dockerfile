@@ -6,14 +6,15 @@ RUN apk add --update --no-cache \
     gcc \
     git \
     libc-dev \
-    make
+    make \
+    ncurses-dev
 
 RUN : \
     && mkdir /opt/chktex \
     && git clone https://git.savannah.nongnu.org/git/chktex.git /opt/chktex \
     && cd /opt/chktex/chktex \
     && ./autogen.sh \
-    && ./configure \
+    && ./configure LIBS="-lncurses" \
     && make
 
 FROM alpine:latest

@@ -6,10 +6,11 @@ RUN apk add --update --no-cache \
     curl \
     gcc \
     libc-dev \
-    make
+    make \
+    ncurses-dev
 
-ARG CHKTEX_VERSION=1.7.9
-ARG CHKTEX_SHA256=df6ee31632a4f4a8e18849b804657e27e3d96deb3f237edbd25656415eb31195
+ARG CHKTEX_VERSION=1.7.10
+ARG CHKTEX_SHA256=cea81a1cde2f151db2b5d2adf2271becfd3c0c1f40eca5cf45b52beeb4a636f9
 
 RUN : \
     && curl --silent --location --output /tmp/chktex.tar.gz http://download.savannah.gnu.org/releases/chktex/chktex-${CHKTEX_VERSION}.tar.gz \
@@ -18,7 +19,7 @@ RUN : \
     && tar --strip-components 1 --directory /opt/chktex -xf /tmp/chktex.tar.gz \
     && cd /opt/chktex \
     && ./autogen.sh \
-    && ./configure \
+    && ./configure LIBS="-lncurses" \
     && make
 
 FROM alpine:latest
